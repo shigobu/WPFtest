@@ -102,20 +102,20 @@ namespace バックアップはできますWPF
             //キャスト
             FlagAndMaxvalue flagAndMaxvalue = (FlagAndMaxvalue)e.UserState;
             WoekFlag flag = flagAndMaxvalue.Flag;
-
+            
             switch (flag)
             {
                 case WoekFlag.DirectoryEnumeration:
                     this.label1.Content = "ディレクトリ列挙中・・・";
-                    this.Content = this.label1.Content;
+                    //this.Content = this.label1.Content;
                     break;
                 case WoekFlag.Counting:
                     this.label1.Content = "見つかったファイル数：" + e.ProgressPercentage.ToString();
-                    this.Content = this.label1.Content;
+                    //this.Content = this.label1.Content;
                     break;
                 case WoekFlag.Comparison:
                     this.label1.Content = "比較中 " + e.ProgressPercentage.ToString() + @"/" + flagAndMaxvalue.Maxvalue.ToString();
-                    this.Content = this.label1.Content;
+                    //this.Content = this.label1.Content;
                     this.progressBar1.Maximum = flagAndMaxvalue.Maxvalue;
                     this.progressBar1.Value = e.ProgressPercentage;
                     this.progressBar1.IsIndeterminate = false;
