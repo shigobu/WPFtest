@@ -46,14 +46,14 @@ namespace バックアップはできますWPF
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 //選択されたフォルダを表示する
-                textBox1.Text = fbd.SelectedPath;
+                PathTextBox.Text = fbd.SelectedPath;
             }
             fbd.Dispose();
         }
 
         private void DoButton_Click(object sender, RoutedEventArgs e)
         {
-            バックアップはできますWPF.ProgressBar progressBar = new バックアップはできますWPF.ProgressBar();
+            ProgressBar progressBar = new ProgressBar(this);
             progressBar.Owner = this;
             progressBar.Show();
         }
