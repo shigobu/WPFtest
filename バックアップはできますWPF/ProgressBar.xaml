@@ -1,0 +1,13 @@
+﻿<Window x:Class="バックアップはできますWPF.ProgressBar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:バックアップはできますWPF"
+        mc:Ignorable="d"
+        Title="ProgressBar" Height="148.909" Width="528.618" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <ProgressBar x:Name="progressBer1" Height="17" Margin="10,10,9.6,0" VerticalAlignment="Top" IsIndeterminate="True"/>
+
+    </Grid>
+</Window>

@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:バックアップはできますWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="バックアップはできます" Height="128.265" Width="602.69" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="icon/icon.ico">
+    <Grid RenderTransformOrigin="0.315,0.204">
+        <TextBox x:Name="textBox1" Height="23" Margin="10,10,90.2,0" Text="ディレクトリの選択" VerticalAlignment="Top" MaxLines="1" MaxLength="1" IsUndoEnabled="True"/>
+        <Button x:Name="button1" Content="選択" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="button1_Click"/>
+        <CheckBox x:Name="ChekBox1" Content="サブディレクトリも含める" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <Button x:Name="DoButton" Content="実行" HorizontalAlignment="Right" Margin="0,0,9.8,9.6" VerticalAlignment="Bottom" Width="89" RenderTransformOrigin="0.517,-0.172" IsDefault="True" Height="36" Click="DoButton_Click"/>
+
     </Grid>
 </Window>
