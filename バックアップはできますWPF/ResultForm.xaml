@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:バックアップはできますWPF"
         mc:Ignorable="d"
-        Title="結果" Height="248.4" Width="497.6" WindowStartupLocation="CenterOwner" Closed="ResultForm1_Closed">
+        Title="結果" Height="248.4" Width="497.6" WindowStartupLocation="CenterOwner" Closed="ResultForm1_Closed" Icon="icon/icon.ico">
     <Grid>
         <ListBox x:Name="listBox" Margin="0,0,0.2,0"/>
     </Grid>
