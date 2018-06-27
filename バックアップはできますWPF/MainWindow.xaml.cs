@@ -53,9 +53,20 @@ namespace バックアップはできますWPF
 
         private void DoButton_Click(object sender, RoutedEventArgs e)
         {
-            ProgressBar progressBar = new ProgressBar(this);
+            PathTextBox.Text = PathTextBox.Text.Trim();
+            if (string.IsNullOrEmpty(PathTextBox.Text))
+            {
+                System.Windows.MessageBox.Show("場所が不正です", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            this.Hide();
+            ResultForm resultForm = new ResultForm();
+            resultForm.Owner = this;
+            resultForm.Show();
+            ProgressBar progressBar = new ProgressBar(this, resultForm);
             progressBar.Owner = this;
-            progressBar.Show();
+            progressBar.ShowDialog();
+
         }
     }
 }

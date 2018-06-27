@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
         <ProgressBar x:Name="progressBar1" Height="17" Margin="10,10,10.4,0" VerticalAlignment="Top" IsIndeterminate="True"/>
         <Label x:Name="label1" Content="計算中" HorizontalAlignment="Left" Margin="10,27,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.524,-0.324" Height="27" Width="423"/>
-        <Button x:Name="ButtonCancel" Content="キャンセル" HorizontalAlignment="Right" Margin="0,0,10.4,10" Width="75" Height="23" VerticalAlignment="Bottom"/>
+        <Button x:Name="ButtonCancel" Content="キャンセル" HorizontalAlignment="Right" Margin="0,0,10.4,10" Width="75" Height="23" VerticalAlignment="Bottom" Click="ButtonCancel_Click"/>
 
     </Grid>
 </Window>

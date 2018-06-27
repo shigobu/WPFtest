@@ -23,8 +23,9 @@ namespace バックアップはできますWPF
     public partial class ProgressBar : Window
     {
         MainWindow SelectForm;
+        ResultForm ResultForm;
         BackgroundWorker backgroundWorker1;
-        public ProgressBar(MainWindow mainWindow)
+        public ProgressBar(MainWindow mainWindow, ResultForm resultForm)
         {
             InitializeComponent();
             backgroundWorker1 = new BackgroundWorker();
@@ -34,22 +35,24 @@ namespace バックアップはできますWPF
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.WorkerSupportsCancellation = true;
             SelectForm = mainWindow;
+            ResultForm = resultForm;
             //バックグラウンド処理実行
-            backgroundWorker1.RunWorkerAsync(SelectForm.PathTextBox.Text);
+            backgroundWorker1.RunWorkerAsync(new DoWorkEventArgument(SelectForm.PathTextBox.Text, (bool)SelectForm.SabFolderCheckBox.IsChecked));
         }
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker bgWorker = (BackgroundWorker)sender;
+            DoWorkEventArgument doWorkEventArgument = (DoWorkEventArgument)e.Argument;
             //GUI更新
             bgWorker.ReportProgress(0, new FlagAndMaxvalue(WoekFlag.DirectoryEnumeration));
             //ディレクトリ一覧
             List<string> directorys = new List<string>();
             //はじめのディレクトリ追加
-            directorys.Add(e.Argument.ToString());
+            directorys.Add(doWorkEventArgument.DirectoryName);
             //サブディレクトリ追加
-            if (/*(bool)SelectForm.SabFolderCheckBox.IsChecked*/true)
+            if (doWorkEventArgument.SearchSabDirectory)
             {
-                foreach (var item in Directory.GetDirectories(e.Argument.ToString(), "*", SearchOption.AllDirectories))
+                foreach (var item in Directory.GetDirectories(doWorkEventArgument.DirectoryName, "*", SearchOption.AllDirectories))
                 {
                     //キャンセルされたか調べる
                     if (bgWorker.CancellationPending)
@@ -121,7 +124,10 @@ namespace バックアップはできますWPF
                     this.progressBar1.IsIndeterminate = false;
                     break;
                 case WoekFlag.FileUpdate:
-                    //ResultForm.listBox1.Items.AddRange(flagAndMaxvalue.FileNames);
+                    foreach (var item in flagAndMaxvalue.FileNames)
+                    {
+                        ResultForm.listBox.Items.Add(item);
+                    }
                     break;
                 default:
                     break;
@@ -185,6 +191,13 @@ namespace バックアップはできますWPF
             bgWorker.ReportProgress(fileCountCounter, new FlagAndMaxvalue(WoekFlag.Comparison, fileCount));
 
             return sameNameFiles;
+        }
+
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonCancel.IsEnabled = false;
+            //キャンセルする
+            backgroundWorker1.CancelAsync();
         }
     }
 
@@ -270,6 +283,41 @@ namespace バックアップはできますWPF
         /// ファイル名
         /// </summary>
         public string[] FileNames
+        {
+            get;
+            set;
+        }
+    }
+
+    /// <summary>
+    /// DoWorkイベントへ渡す引数のクラスです。
+    /// </summary>
+    class DoWorkEventArgument
+    {
+        /// <summary>
+        /// クラスを初期化します
+        /// </summary>
+        /// <param name="directoryName">ディレクトリ名</param>
+        /// <param name="searchSabDirectory">サブディレクトリを含めるか</param>
+        public DoWorkEventArgument(string directoryName, bool searchSabDirectory)
+        {
+            DirectoryName = directoryName ?? throw new ArgumentNullException(nameof(directoryName));
+            SearchSabDirectory = searchSabDirectory;
+        }
+
+        /// <summary>
+        /// ディレクトリ名を取得または設定します。
+        /// </summary>
+        public string DirectoryName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// サブディレクトリを含めるかを表す値を取得または設定します。
+        /// </summary>
+        public bool SearchSabDirectory
         {
             get;
             set;
