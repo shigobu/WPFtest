@@ -66,17 +66,13 @@ namespace バックアップはできますWPF
             //サブディレクトリ追加
             if (doWorkEventArgument.SearchSabDirectory)
             {
-                foreach (var item in Directory.GetDirectories(doWorkEventArgument.DirectoryName, "*", SearchOption.AllDirectories))
+                string[] dirs = AllDirectoryEnumeration(doWorkEventArgument.DirectoryName, bgWorker, e);
+                //キャンセルされた場合
+                if (dirs == null)
                 {
-                    //キャンセルされたか調べる
-                    if (bgWorker.CancellationPending)
-                    {
-                        //キャンセルされたとき
-                        e.Cancel = true;
-                        return;
-                    }
-                    directorys.Add(item);
+                    return;
                 }
+                directorys.AddRange(dirs);
             }
 
             //ファイルの数カウント
@@ -212,6 +208,44 @@ namespace バックアップはできますWPF
             ButtonCancel.IsEnabled = false;
             //キャンセルする
             backgroundWorker1.CancelAsync();
+        }
+
+        /// <summary>
+        /// サブディレクトリを含めたディレクトリを返します。
+        /// BackgroundWorker対応版
+        /// </summary>
+        /// <param name="directoryName">ディレクトリ名</param>
+        /// <param name="backgroundWorker">バックグラウンドワーカーインスタンス</param>
+        /// <param name="doWorkEventArgs">DoWorkEventArgsインスタンス</param>
+        /// <returns>ディレクトリ一覧 キャンセルされた場合はnull</returns>
+        static string[] AllDirectoryEnumeration(string directoryName, BackgroundWorker backgroundWorker, DoWorkEventArgs doWorkEventArgs)
+        {
+            List<string> directoryList = new List<string>();
+
+            string[] dirArr = Directory.GetDirectories(directoryName);
+            //キャンセルされたか調べる
+            if (backgroundWorker.CancellationPending)
+            {
+                //キャンセルされたとき
+                doWorkEventArgs.Cancel = true;
+                return null;
+            }
+
+            foreach (var dirName in dirArr)
+            {
+                FileAttributes fileAttributes = File.GetAttributes(dirName);
+                if ((fileAttributes & FileAttributes.ReparsePoint) != FileAttributes.ReparsePoint)
+                {
+                    directoryList.Add(dirName);
+                    string[] dirs = AllDirectoryEnumeration(dirName, backgroundWorker, doWorkEventArgs);
+                    if (dirs == null)
+                    {
+                        return null;
+                    }
+                    directoryList.AddRange(dirs);
+                }
+            }
+            return directoryList.ToArray();
         }
     }
 
